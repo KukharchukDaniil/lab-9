@@ -7,6 +7,7 @@ public class Login extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField textField1;
+    boolean bOkFlag = false;
 
     public Login() {
         setContentPane(contentPane);
@@ -18,7 +19,6 @@ public class Login extends JDialog {
                 onOK();
             }
         });
-
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -39,10 +39,17 @@ public class Login extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        setSize(300,150);
+        setTitle("Enter the address");
     }
 
     private void onOK() {
-        // add your code here
+        String str;
+        if(!(str = textField1.getText()).isEmpty())
+        {
+            bOkFlag = true;
+            Client.address = str;
+        }
         dispose();
     }
 

@@ -7,12 +7,19 @@ public class Client {
     public static Socket socket;
     public static ObjectOutputStream bos;
     public static ObjectInputStream bis;
+    public static String address;
     public static void main(String[] args) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        Login login = new Login();
+        login.setVisible(true);
+        while(!login.bOkFlag)
+        {
+
+        }
         String str;
         try {
 //            str = bufferedReader.readLine();
-            socket = new Socket("localhost",5523);
+            socket = new Socket(address,5523);
             System.out.println("Success");
             bos = new ObjectOutputStream(socket.getOutputStream());
             bis = new ObjectInputStream(socket.getInputStream());
