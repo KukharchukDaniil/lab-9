@@ -1,0 +1,71 @@
+import java.io.*;
+import java.net.Socket;
+import java.util.Date;
+
+public  class Connection extends Thread{
+    public static byte id_g = 1;
+    public  byte ID;
+    public Socket socket;
+    public Connection(Socket s)
+    {
+        System.out.println(s.getInetAddress().getHostName() + " connected to the server");
+        for (byte i = 0; i < 2; i++) {
+            for (Connection d:Server.connections
+                 ) {
+                if(d.ID!=i){ID = i; break;};
+            }
+        }
+        socket = s;
+        start();
+    }
+
+    @Override
+    public void run() {
+        try {
+            try {
+
+                super.run();
+                while(true)
+                {
+
+                    synchronized (Server.messages) {
+                        if (!Server.messages.isEmpty()) {
+                            Message msg = Server.messages.peek();
+                            Server.field[(msg.CODE - 1) / 3][(msg.CODE - 1) % 3] = (byte) (msg.user);
+                            synchronized (Server.connections) {
+                                for (Connection d :
+                                        Server.connections) {
+                                    Server.connectionStreams.get(d.ID).oos.writeObject(msg);
+                                    Server.connectionStreams.get(d.ID).oos.flush();
+                                }
+                            }
+                            Server.messages.remove();
+                        }
+                    }
+                    String s = new String();
+                    int code = (int) Server.connectionStreams.get(ID).ois.readObject();
+                    System.out.println(ID + ":" + code);
+                        if (Server.messages.isEmpty() && ID != Server.lastPlayer) {
+                            Server.lastPlayer = ID;
+                            Server.messages.add(new Message(code, ID));
+                            System.out.println( Server.messages.size());
+                        } else {
+                        }
+
+
+                }
+            }catch (Exception e) {
+                System.out.println(e);
+
+            }finally {
+                System.out.println("Connection " + socket.getInetAddress().getHostName() + " closed");
+            }
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
