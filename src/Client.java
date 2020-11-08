@@ -81,7 +81,7 @@ public class Client {
 //                        jd2.setVisible(true);
 //                        s.add(jd2);
                         break;
-                    case -1:System.out.println("SOS");
+                    case -1:System.out.println("S");
                         break;
                 }
             }
