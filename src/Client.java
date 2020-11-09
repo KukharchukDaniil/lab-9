@@ -28,8 +28,9 @@ public class Client {
             Crosses s =  new Crosses();
             s.label1.setText(msg.user == 1? "X":"0");
             s.pack();
-
-            while(!socket.isClosed()) {
+            int flag = -1;
+            while(!socket.isClosed()&& flag!=0) {
+                flag--;
                 obj = bis.readObject();
                 msg = (Message)obj;
                 System.out.println(msg.CODE);
@@ -76,6 +77,7 @@ public class Client {
                     case 16:
 
                         s.label1.setText("Defeat");
+                        flag = 1;
 //                        JDialog jd1 = new JDialog(s,"You have won!");
 //                        jd1.setSize(200,200);
 //                        jd1.setVisible(true);
@@ -83,6 +85,7 @@ public class Client {
                         break;
                     case 15:
                         s.label1.setText("Victory");
+                        flag = 1;
 //                        JDialog jd2 = new JDialog(s,"You have lose!");
 //                        jd2.setSize(200,200);
 //                        jd2.setVisible(true);

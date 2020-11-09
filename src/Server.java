@@ -54,13 +54,15 @@ public class Server {
                      ) {
                     st.oos.writeObject(new Message(0,(byte)st.ID));
                 }
-                while (true) {
+                while (!serverSocket.isClosed()) {
                     synchronized (connections) {
                         if (checkField()) {
                             for (int i = 0; i < connectionStreams.size(); i++) {
                                 connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 15 : 16, lastPlayer));
                                 connectionStreams.get(i).oos.flush();
                             }
+
+                            System.out.println("GAME OVER!");
                             break;
                         }
                     }

@@ -59,7 +59,7 @@ public  class Connection extends Thread{
 
 
             } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(socket.getInetAddress().getCanonicalHostName() + " has disconnected");
         }finally {
             try {
                 socket.close();
