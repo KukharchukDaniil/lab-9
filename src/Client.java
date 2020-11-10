@@ -19,6 +19,8 @@ public class Client {
         String str;
         try {
 //            str = bufferedReader.readLine();
+//            ssss
+            //sssssssss
             socket = new Socket(address,5523);
             System.out.println("Success");
             bos = new ObjectOutputStream(socket.getOutputStream());
