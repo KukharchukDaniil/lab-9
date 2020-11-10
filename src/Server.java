@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -8,68 +10,96 @@ public class Server {
     private static ServerSocket serverSocket;
     public static int PORT = 5523;
     private static int counter = 0;
-    public static int nFieldSize;
-    static final byte[][] field = new byte[3][3];
+    public static Integer nFieldSize;
+    static byte[][] field;
     public static ArrayList<Message> messages = new ArrayList<Message>();
     public static ArrayList<ConnectionStream> connectionStreams = new ArrayList<ConnectionStream>();
     public static byte lastPlayer = -1;
     public static ArrayList<Connection> connections = new ArrayList<Connection>();
 
     private static boolean checkField() {
-        for (int i = 0; i < 3; i++) {
-            if ((field[i][0] == field[i][1] && field[i][1] == field[i][2]) && field[i][0] != 3) {
-                return true;
+        boolean bSuccess = true;
+        for (int i = 0; i < nFieldSize; i++) {
+                 bSuccess = true;
+            for (int j = 0; j < nFieldSize-1; j++) {
+                if(field[i][j]== 3 || ((field[i][j] != field[i][j + 1]) )) {
+                    bSuccess = false;
+                }
             }
-            ;
-            if ((field[0][i] == field[1][i] && field[1][i] == field[2][i]) && field[0][i] != 3) {
-                return true;
+            if(bSuccess) return true;
+            for (int j = 0; j < nFieldSize-1; j++) {
+                bSuccess = true;
+                if(field[i][j]==3 || (field[i][j] != field[j + 1][i]))
+                    bSuccess =  false;
             }
-            ;
+            if(bSuccess) return true;
         }
-        if (((field[0][0] == field[1][1] && field[1][1] == field[2][2]) || (field[0][2] == field[1][1] && field[1][1] == field[2][0])) && field[1][1] != 3) {
-            return true;
+//                    if ((field[i][0] == field[i][1] && field[i][1] == field[i][2]) && field[i][0] != 3) {
+//                        return true;
+//                    }
+        bSuccess = true;
+        for (int i = 0; i < nFieldSize - 1; i++) {
+            if(field[i][nFieldSize - 1 - i] == 3 || field[i][nFieldSize - 1-i] != field[i+1][nFieldSize - 2 - i])
+                bSuccess = false;
         }
-        ;
-        return false;
-    }
+            if(bSuccess)return true;
 
+        bSuccess = true;
+        for (int i = 0; i < nFieldSize-1; i++) {
+            if(field[i][i] == 3 || field[i][i] != field[i+1][i+1])
+                bSuccess = false;
+        }
+        return bSuccess;
+    }
+    private static void initField() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        nFieldSize = Integer.parseInt( bufferedReader.readLine());
+        field = new byte[nFieldSize][nFieldSize];
+        for (byte[] s : field
+        ) {
+
+            Arrays.fill(s, (byte) 3);
+        }
+    }
+    private static void getConnections() throws IOException {
+            serverSocket = new ServerSocket(PORT, 2);
+        while (true) {
+            Socket client = serverSocket.accept();
+            connectionStreams.add(new ConnectionStream(client,counter));
+            connections.add(new Connection(client));
+            counter++;
+            if (counter == 2) {
+                break;
+            }
+        }
+        for (ConnectionStream st :connectionStreams
+        ) {
+            st.oos.writeObject(new Message(0,(byte)st.ID));
+        }
+    }
+    private static void gameProc() throws IOException {
+        while (!serverSocket.isClosed()) {
+            synchronized (connections) {
+                if (checkField()) {
+                    for (int i = 0; i < connectionStreams.size(); i++) {
+                        connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 15 : 16, lastPlayer));
+                        connectionStreams.get(i).oos.flush();
+                    }
+
+                    System.out.println("GAME OVER!");
+                    break;
+                }
+            }
+        }
+    }
     public static void main(String[] args) throws IOException {
         try {
-            for (byte[] s : field
-            ) {
-
-                Arrays.fill(s, (byte) 3);
-            }
-            serverSocket = new ServerSocket(PORT, 2);
+            initField();
+            getConnections();
             try {
-                while (true) {
-                    Socket client = serverSocket.accept();
-                    connectionStreams.add(new ConnectionStream(client,counter));
-                    connections.add(new Connection(client));
-                    counter++;
-                    if (counter == 2) {
-                        break;
-                    }
-                }
-                for (ConnectionStream st :connectionStreams
-                     ) {
-                    st.oos.writeObject(new Message(0,(byte)st.ID));
-                }
-                while (!serverSocket.isClosed()) {
-                    synchronized (connections) {
-                        if (checkField()) {
-                            for (int i = 0; i < connectionStreams.size(); i++) {
-                                connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 15 : 16, lastPlayer));
-                                connectionStreams.get(i).oos.flush();
-                            }
-
-                            System.out.println("GAME OVER!");
-                            break;
-                        }
-                    }
-//
-                }
+                gameProc();
             } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         } finally {
             serverSocket.close();
