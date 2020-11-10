@@ -8,6 +8,7 @@ public class Server {
     private static ServerSocket serverSocket;
     public static int PORT = 5523;
     private static int counter = 0;
+    public static int nFieldSize;
     static final byte[][] field = new byte[3][3];
     public static ArrayList<Message> messages = new ArrayList<Message>();
     public static ArrayList<ConnectionStream> connectionStreams = new ArrayList<ConnectionStream>();
