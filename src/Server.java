@@ -82,7 +82,7 @@ public class Server {
             synchronized (connections) {
                 if (checkField()) {
                     for (int i = 0; i < connectionStreams.size(); i++) {
-                        connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 15 : 16, lastPlayer));
+                        connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 17 : 18, lastPlayer));
                         connectionStreams.get(i).oos.flush();
                     }
 

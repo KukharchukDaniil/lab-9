@@ -74,7 +74,7 @@ public class Client {
                         s.button9.setText(msg.user == 1? "X":"0");
                         s.button9.setEnabled(false);
                         break;
-                    case 16:
+                    case 17:
 
                         s.label1.setText("Defeat");
                         flag = 1;
@@ -83,7 +83,7 @@ public class Client {
 //                        jd1.setVisible(true);
 //                        s.add(jd1);
                         break;
-                    case 15:
+                    case 18:
                         s.label1.setText("Victory");
                         flag = 1;
 //                        JDialog jd2 = new JDialog(s,"You have lose!");
