@@ -6,7 +6,9 @@ public class Login extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField1;
+    private JFormattedTextField formattedTextField1;
+    private JFormattedTextField formattedTextField2;
+    private JPanel addressField;
     boolean bOkFlag = false;
 
     public Login() {
@@ -16,7 +18,7 @@ public class Login extends JDialog {
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                //onOK();
             }
         });
         buttonCancel.addActionListener(new ActionListener() {
@@ -43,15 +45,15 @@ public class Login extends JDialog {
         setTitle("Enter the address");
     }
 
-    private void onOK() {
-        String str;
-        if(!(str = textField1.getText()).isEmpty())
-        {
-            bOkFlag = true;
-            Client.address = str;
-        }
-        dispose();
-    }
+//    private void onOK() {
+//        String str;
+//        if(!(str = textField1.getText()).isEmpty())
+//        {
+//            bOkFlag = true;
+//            Client.address = str;
+//        }
+//        dispose();
+//    }
 
     private void onCancel() {
         // add your code here if necessary
