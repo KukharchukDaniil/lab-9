@@ -1,5 +1,4 @@
 import java.io.Serializable;
-
 public class Message implements Serializable {
     public  int CODE;
     public  byte user;

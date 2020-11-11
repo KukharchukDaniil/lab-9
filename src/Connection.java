@@ -31,36 +31,35 @@ public  class Connection extends Thread{
 
     @Override
     public void run() {
-        try{
+        try {
             super.run();
-            while(!socket.isClosed())
-            {
-                    int code = (int) Server.connectionStreams.get(ID).ois.readObject();
-                    if (ID != Server.lastPlayer) {
-                        System.out.println(ID + ":" + code);
+            while (!socket.isClosed()) {
+                int code = (int) Server.connectionStreams.get(ID).ois.readObject();
+                if (ID != Server.lastPlayer) {
+                    System.out.println(ID + ":" + code);
 
-                        Server.lastPlayer = ID;
-                        Server.messages.add(new Message(code, ID));
-                    } else {
+                    Server.lastPlayer = ID;
+                    Server.messages.add(new Message(code, ID));
+                } else {
+                }
+                if (!Server.messages.isEmpty()) {
+                    Message msg = Server.messages.get(Server.messages.size() - 1);
+                    Server.field[(msg.CODE - 1) / Server.nFieldSize][(msg.CODE - 1) % Server.nFieldSize] = msg.user;
+                    synchronized (Server.connections) {
+                        for (Connection d :
+                                Server.connections) {
+                            Server.connectionStreams.get(d.ID).oos.writeObject(msg);
+                            Server.connectionStreams.get(d.ID).oos.flush();
+                        }
                     }
-                        if (!Server.messages.isEmpty()) {
-                            Message msg = Server.messages.get(Server.messages.size()-1);
-                            Server.field[(msg.CODE - 1) / 3][(msg.CODE - 1) % 3] = msg.user;
-                            synchronized (Server.connections) {
-                                for (Connection d :
-                                        Server.connections) {
-                                    Server.connectionStreams.get(d.ID).oos.writeObject(msg);
-                                    Server.connectionStreams.get(d.ID).oos.flush();
-                                }
-                            }
 
                 }
             }
 
 
-            } catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(socket.getInetAddress().getCanonicalHostName() + " has disconnected");
-        }finally {
+        } finally {
             try {
                 socket.close();
             } catch (IOException e) {

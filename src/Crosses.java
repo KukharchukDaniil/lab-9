@@ -6,6 +6,24 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.io.*;
 
+class MyButtonActionListener implements ActionListener
+{
+    int code;
+    MyButtonActionListener(int code)
+    {
+        super();
+        this.code = code;
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            Client.bos.writeObject(code);
+            Client.bos.flush();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+}
 public class Crosses extends JFrame {
     public JButton button1;
     public JButton button2;
@@ -20,118 +38,19 @@ public class Crosses extends JFrame {
     public JLabel label1;
 
     public Crosses() {
-
+        label1.setFont(new Font("Comic Sans",Font.BOLD,20));
+        label1.setForeground(Color.ORANGE);
         setContentPane(panel1);
         setVisible(true);
-        ActionListener listener1 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(1);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-        ActionListener listener2 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(2);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-        ActionListener listener3 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(3);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-        ActionListener listener4 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(4);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-        ActionListener listener5 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(5);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-        ActionListener listener6 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(6);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-        ActionListener listener7 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(7);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-        ActionListener listener8 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(8);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-        ActionListener listener9 = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Client.bos.writeObject(9);
-                    Client.bos.flush();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        };
-
-        button1.addActionListener(listener1);
-        button2.addActionListener(listener2);
-        button3.addActionListener(listener3);
-        button4.addActionListener(listener4);
-        button5.addActionListener(listener5);
-        button6.addActionListener(listener6);
-        button7.addActionListener(listener7);
-        button8.addActionListener(listener8);
-        button9.addActionListener(listener9);
+        button1.addActionListener(new MyButtonActionListener(1));
+        button2.addActionListener(new MyButtonActionListener(2));
+        button3.addActionListener(new MyButtonActionListener(3));
+        button4.addActionListener(new MyButtonActionListener(4));
+        button5.addActionListener(new MyButtonActionListener(5));
+        button6.addActionListener(new MyButtonActionListener(6));
+        button7.addActionListener(new MyButtonActionListener(7));
+        button8.addActionListener(new MyButtonActionListener(8));
+        button9.addActionListener(new MyButtonActionListener(9));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }

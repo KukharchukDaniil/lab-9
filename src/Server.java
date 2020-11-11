@@ -21,40 +21,34 @@ public class Server {
         boolean bSuccess = true;
         for (int i = 0; i < nFieldSize; i++) {
                  bSuccess = true;
-            for (int j = 0; j < nFieldSize-1; j++) {
+            for (int j = 0; j < nFieldSize-1; j++) { // проверка по строке
                 if(field[i][j]== 3 || ((field[i][j] != field[i][j + 1]) )) {
                     bSuccess = false;
                 }
             }
             if(bSuccess) return true;
-            for (int j = 0; j < nFieldSize-1; j++) {
+            for (int j = 0; j < nFieldSize-1; j++) { // проверка по столбцу
                 bSuccess = true;
-                if(field[i][j]==3 || (field[i][j] != field[j + 1][i]))
+                if(field[j][i]==3 || (field[j][i] != field[j + 1][i]))
                     bSuccess =  false;
             }
             if(bSuccess) return true;
         }
-//                    if ((field[i][0] == field[i][1] && field[i][1] == field[i][2]) && field[i][0] != 3) {
-//                        return true;
-//                    }
         bSuccess = true;
-        for (int i = 0; i < nFieldSize - 1; i++) {
+        for (int i = 0; i < nFieldSize - 1; i++) { // проверка по побочной диагонали
             if(field[i][nFieldSize - 1 - i] == 3 || field[i][nFieldSize - 1-i] != field[i+1][nFieldSize - 2 - i])
                 bSuccess = false;
         }
             if(bSuccess)return true;
 
         bSuccess = true;
-        for (int i = 0; i < nFieldSize-1; i++) {
+        for (int i = 0; i < nFieldSize-1; i++) { // проверка по главной диагонали
             if(field[i][i] == 3 || field[i][i] != field[i+1][i+1])
                 bSuccess = false;
         }
         return bSuccess;
     }
     private static void initField() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        nFieldSize = Integer.parseInt( bufferedReader.readLine());
-        field = new byte[nFieldSize][nFieldSize];
         for (byte[] s : field
         ) {
 
@@ -66,6 +60,8 @@ public class Server {
         while (true) {
             Socket client = serverSocket.accept();
             connectionStreams.add(new ConnectionStream(client,counter));
+            connectionStreams.get(counter).oos.writeInt(nFieldSize);
+            connectionStreams.get(counter).oos.writeInt(counter);
             connections.add(new Connection(client));
             counter++;
             if (counter == 2) {
@@ -93,7 +89,17 @@ public class Server {
         }
     }
     public static void main(String[] args) throws IOException {
+        ServerFieldInitializer serverFieldInitializer = new ServerFieldInitializer();
+        while(true)
+        {
+            System.out.print("");
+            if(serverFieldInitializer.flag)
+                break;
+        }
         try {
+
+            field = new byte[nFieldSize][nFieldSize];
+            System.err.println("Field size is " +nFieldSize);
             initField();
             getConnections();
             try {
@@ -104,6 +110,5 @@ public class Server {
         } finally {
             serverSocket.close();
         }
-
     }
 }
