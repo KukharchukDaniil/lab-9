@@ -16,6 +16,9 @@ public class Server {
     public static ArrayList<ConnectionStream> connectionStreams = new ArrayList<ConnectionStream>();
     public static byte lastPlayer = -1;
     public static ArrayList<Connection> connections = new ArrayList<Connection>();
+    public static Integer playAgain = 0;
+    public static boolean bPlayAgainSet= false;
+    public static boolean bSomeoneDisconnected = false;
 
     private static boolean checkField() {
         boolean bSuccess = true;
@@ -54,6 +57,7 @@ public class Server {
 
             Arrays.fill(s, (byte) 3);
         }
+        System.err.println("Field is initialized");
     }
     private static void getConnections() throws IOException {
             serverSocket = new ServerSocket(PORT, 2);
@@ -74,19 +78,20 @@ public class Server {
         }
     }
     private static void gameProc() throws IOException {
-        while (!serverSocket.isClosed()) {
+        while (!serverSocket.isClosed() && !bSomeoneDisconnected) {
             synchronized (connections) {
                 if (checkField()) {
                     for (int i = 0; i < connectionStreams.size(); i++) {
                         connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 17 : 18, lastPlayer));
                         connectionStreams.get(i).oos.flush();
                     }
-
                     System.out.println("GAME OVER!");
+                    lastPlayer = -1;
                     break;
                 }
             }
         }
+        System.out.println(playAgain);
     }
     public static void main(String[] args) throws IOException {
         ServerFieldInitializer serverFieldInitializer = new ServerFieldInitializer();
@@ -100,15 +105,24 @@ public class Server {
 
             field = new byte[nFieldSize][nFieldSize];
             System.err.println("Field size is " +nFieldSize);
-            initField();
             getConnections();
-            try {
-                gameProc();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+            do {
+                playAgain = 0;
+                lastPlayer = -1;
+                messages.clear();
+                System.out.println("start");
+                initField();
+                try {
+                    gameProc();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                if (bSomeoneDisconnected)break;
+                while(!bPlayAgainSet)System.out.print("");
+            }while(playAgain == 44);
         } finally {
             serverSocket.close();
+            System.err.println("Server is closed");
         }
     }
 }

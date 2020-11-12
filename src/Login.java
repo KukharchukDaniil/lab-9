@@ -14,7 +14,7 @@ import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.regex.Matcher;
 
-public class Login extends JDialog {
+public class Login extends JFrame {
     private JPanel contentPane;
     public JButton buttonOK;
     public JFormattedTextField ipText;

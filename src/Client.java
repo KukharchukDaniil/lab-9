@@ -12,7 +12,10 @@ public class Client {
     public static ObjectOutputStream bos;
     public static ObjectInputStream bis;
     public static String address;
+    public static Crosses crosses;
+    public static ExtendedCrosses extendedCrosses;
     public static int nSize;
+    static int point;
     static String port;
     public static void main(String[] args) {
         Login login = new Login();
@@ -35,8 +38,10 @@ public class Client {
             System.out.println("Success");
             bos = new ObjectOutputStream(socket.getOutputStream());
             bis = new ObjectInputStream(socket.getInputStream());
-            int size = bis.readInt();
-            switch (size)
+            nSize = bis.readInt();
+
+            point = bis.readInt();
+             do{   switch (nSize)
             {
                 case 3:
                     CrossesProc();
@@ -45,17 +50,24 @@ public class Client {
                     ExtendedCrossesProc();
                     break;
             }
+            PlayAgainDialog playAgainDialog  = new PlayAgainDialog();
+             playAgainDialog.setVisible(true);
+             while (!playAgainDialog.flag){System.out.print("");};
+             if(socket.isClosed())break;
+             int check = bis.readInt();
+             if (check != 44)break;
+             System.out.println("Again");
+             }while (!socket.isClosed());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
     public static void CrossesProc() throws IOException, ClassNotFoundException {
-        Integer point = bis.readInt();
-        Crosses s =  new Crosses();
-        s.label1.setText(point == 1? "X":"0");
+        crosses =  new Crosses();
+        crosses.label1.setText(point == 1? "X":"0");
         Object obj;
         Message msg;
-        s.pack();
+        crosses.pack();
         int flag = -1;
         while(!socket.isClosed()&& flag!=0) {
             flag--;
@@ -67,54 +79,51 @@ public class Client {
             {
 
                 case 1:
-                    s.button1.setText(msg.user == 1? "X":"0");
-                    s.button1.setEnabled(false);
-                    s.button1.updateUI();
+                    crosses.button1.setText(msg.user == 1? "X":"0");
+                    crosses.button1.setEnabled(false);
+                    crosses.button1.updateUI();
                     break;
                 case 2:
-                    s.button2.setText(msg.user == 1? "X":"0");
-                    s.button2.setEnabled(false);
-                    s.button1.updateUI();
+                    crosses.button2.setText(msg.user == 1? "X":"0");
+                    crosses.button2.setEnabled(false);
+                    crosses.button1.updateUI();
                     break;
                 case 3:
-                    s.button3.setText(msg.user == 1? "X":"0");
-                    s.button3.setEnabled(false);
+                    crosses.button3.setText(msg.user == 1? "X":"0");
+                    crosses.button3.setEnabled(false);
                     break;
                 case 4:
-                    s.button4.setText(msg.user == 1? "X":"0");
-                    s.button4.setEnabled(false);
+                    crosses.button4.setText(msg.user == 1? "X":"0");
+                    crosses.button4.setEnabled(false);
                     break;
                 case 5:
-                    s.button5.setText(msg.user == 1? "X":"0");
-                    s.button5.setEnabled(false);
+                    crosses.button5.setText(msg.user == 1? "X":"0");
+                    crosses.button5.setEnabled(false);
                     break;
                 case 6:
-                    s.button6.setText(msg.user == 1? "X":"0");
-                    s.button6.setEnabled(false);
+                    crosses.button6.setText(msg.user == 1? "X":"0");
+                    crosses.button6.setEnabled(false);
                     break;
                 case 7:
-                    s.button7.setText(msg.user == 1? "X":"0");
-                    s.button7.setEnabled(false);
+                    crosses.button7.setText(msg.user == 1? "X":"0");
+                    crosses.button7.setEnabled(false);
                     break;
                 case 8:
-                    s.button8.setText(msg.user == 1? "X":"0");
-                    s.button8.setEnabled(false);
+                    crosses.button8.setText(msg.user == 1? "X":"0");
+                    crosses.button8.setEnabled(false);
                     break;
                 case 9:
-                    s.button9.setText(msg.user == 1? "X":"0");
-                    s.button9.setEnabled(false);
+                    crosses.button9.setText(msg.user == 1? "X":"0");
+                    crosses.button9.setEnabled(false);
                     break;
                 case 17:
 
-                    s.label1.setText("Victory");
+                    crosses.label1.setText("Victory");
                     flag = 1;
-//                        JDialog jd1 = new JDialog(s,"You have won!");
-//                        jd1.setSize(200,200);
-//                        jd1.setVisible(true);
-//                        s.add(jd1);
+
                     break;
                 case 18:
-                    s.label1.setText("Defeat");
+                    crosses.label1.setText("Defeat");
                     flag = 1;
 //                        JDialog jd2 = new JDialog(s,"You have lose!");
 //                        jd2.setSize(200,200);
@@ -127,10 +136,9 @@ public class Client {
         }
     }
     public static void ExtendedCrossesProc() throws IOException, ClassNotFoundException {
-        int point = bis.readInt();
-        ExtendedCrosses s =  new ExtendedCrosses();
-        s.label1.setText(point == 1? "X":"0");
-        s.pack();
+        extendedCrosses =  new ExtendedCrosses();
+        extendedCrosses.label1.setText(point == 1? "X":"0");
+        extendedCrosses.pack();
         Message msg;
         Object obj;
         int flag = -1;
@@ -143,87 +151,87 @@ public class Client {
             switch (msg.CODE)
             {
                 case 1:
-                    s.button1.setText(msg.user == 1? "X":"0");
-                    s.button1.setEnabled(false);
-                    s.button1.updateUI();
+                    extendedCrosses.button1.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button1.setEnabled(false);
+                    extendedCrosses.button1.updateUI();
                     break;
                 case 2:
-                    s.button2.setText(msg.user == 1? "X":"0");
-                    s.button2.setEnabled(false);
-                    s.button1.updateUI();
+                    extendedCrosses.button2.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button2.setEnabled(false);
+                    extendedCrosses.button1.updateUI();
                     break;
                 case 3:
-                    s.button3.setText(msg.user == 1? "X":"0");
-                    s.button3.setEnabled(false);
+                    extendedCrosses.button3.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button3.setEnabled(false);
                     break;
                 case 4:
-                    s.button4.setText(msg.user == 1? "X":"0");
-                    s.button4.setEnabled(false);
+                    extendedCrosses.button4.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button4.setEnabled(false);
                     break;
                 case 5:
-                    s.button5.setText(msg.user == 1? "X":"0");
-                    s.button5.setEnabled(false);
+                    extendedCrosses.button5.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button5.setEnabled(false);
                     break;
                 case 6:
-                    s.button6.setText(msg.user == 1? "X":"0");
-                    s.button6.setEnabled(false);
+                    extendedCrosses.button6.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button6.setEnabled(false);
                     break;
                 case 7:
-                    s.button7.setText(msg.user == 1? "X":"0");
-                    s.button7.setEnabled(false);
+                    extendedCrosses.button7.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button7.setEnabled(false);
                     break;
                 case 8:
-                    s.button8.setText(msg.user == 1? "X":"0");
-                    s.button8.setEnabled(false);
+                    extendedCrosses.button8.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button8.setEnabled(false);
                     break;
                 case 9:
-                    s.button9.setText(msg.user == 1? "X":"0");
-                    s.button9.setEnabled(false);
+                    extendedCrosses.button9.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button9.setEnabled(false);
                     break;
                 case 10:
-                    s.button10.setText(msg.user == 1? "X":"0");
-                    s.button10.setEnabled(false);
+                    extendedCrosses.button10.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button10.setEnabled(false);
                     break;
                 case 11:
-                    s.button11.setText(msg.user == 1? "X":"0");
-                    s.button11.setEnabled(false);
+                    extendedCrosses.button11.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button11.setEnabled(false);
                     break;
                 case 12:
-                    s.button12.setText(msg.user == 1? "X":"0");
-                    s.button12.setEnabled(false);
+                    extendedCrosses.button12.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button12.setEnabled(false);
                     break;
                 case 13:
-                    s.button13.setText(msg.user == 1? "X":"0");
-                    s.button13.setEnabled(false);
+                    extendedCrosses.button13.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button13.setEnabled(false);
                     break;
                 case 14:
-                    s.button14.setText(msg.user == 1? "X":"0");
-                    s.button14.setEnabled(false);
+                    extendedCrosses.button14.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button14.setEnabled(false);
                     break;
                 case 15:
-                    s.button15.setText(msg.user == 1? "X":"0");
-                    s.button15.setEnabled(false);
+                    extendedCrosses.button15.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button15.setEnabled(false);
                     break;
                 case 16:
-                    s.button16.setText(msg.user == 1? "X":"0");
-                    s.button16.setEnabled(false);
+                    extendedCrosses.button16.setText(msg.user == 1? "X":"0");
+                    extendedCrosses.button16.setEnabled(false);
                     break;
                 case 18:
 
-                    s.label1.setText("Defeat");
+                    extendedCrosses.label1.setText("Defeat");
                     flag = 1;
-//                        JDialog jd1 = new JDialog(s,"You have won!");
+//                        JDialog jd1 = new JDialog(extendedCrosses,"You have won!");
 //                        jd1.setSize(200,200);
 //                        jd1.setVisible(true);
-//                        s.add(jd1);
+//                        extendedCrosses.add(jd1);
                     break;
                 case 17:
-                    s.label1.setText("Victory");
+                    extendedCrosses.label1.setText("Victory");
                     flag = 1;
-//                        JDialog jd2 = new JDialog(s,"You have lose!");
+//                        JDialog jd2 = new JDialog(extendedCrosses,"You have lose!");
 //                        jd2.setSize(200,200);
 //                        jd2.setVisible(true);
-//                        s.add(jd2);
+//                        extendedCrosses.add(jd2);
                     break;
                 case -1:System.out.println("S");
                     break;
