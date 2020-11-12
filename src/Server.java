@@ -107,6 +107,7 @@ public class Server {
             System.err.println("Field size is " +nFieldSize);
             getConnections();
             do {
+                bPlayAgainSet = false;
                 playAgain = 0;
                 lastPlayer = -1;
                 messages.clear();

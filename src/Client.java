@@ -120,11 +120,12 @@ public class Client {
 
                     crosses.label1.setText("Victory");
                     flag = 1;
-
+                    crosses.lockInput();
                     break;
                 case 18:
                     crosses.label1.setText("Defeat");
                     flag = 1;
+                    crosses.lockInput();
 //                        JDialog jd2 = new JDialog(s,"You have lose!");
 //                        jd2.setSize(200,200);
 //                        jd2.setVisible(true);
@@ -220,6 +221,7 @@ public class Client {
 
                     extendedCrosses.label1.setText("Defeat");
                     flag = 1;
+                    extendedCrosses.lockInput();
 //                        JDialog jd1 = new JDialog(extendedCrosses,"You have won!");
 //                        jd1.setSize(200,200);
 //                        jd1.setVisible(true);
@@ -228,6 +230,7 @@ public class Client {
                 case 17:
                     extendedCrosses.label1.setText("Victory");
                     flag = 1;
+                    extendedCrosses.lockInput();
 //                        JDialog jd2 = new JDialog(extendedCrosses,"You have lose!");
 //                        jd2.setSize(200,200);
 //                        jd2.setVisible(true);

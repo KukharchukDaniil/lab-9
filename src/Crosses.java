@@ -25,18 +25,29 @@ class MyButtonActionListener implements ActionListener
     }
 }
 public class Crosses extends JFrame {
-    public JButton button1;
-    public JButton button2;
-    public JButton button3;
-    public JButton button4;
-    public JButton button5;
-    public JButton button6;
-    public JButton button7;
-    public JButton button8;
-    public JButton button9;
-    public JPanel panel1;
-    public JLabel label1;
-
+    public  JButton button1;
+    public  JButton button2;
+    public  JButton button3;
+    public  JButton button4;
+    public  JButton button5;
+    public  JButton button6;
+    public  JButton button7;
+    public  JButton button8;
+    public  JButton button9;
+    public  JPanel panel1;
+    public  JLabel label1;
+    public  void lockInput()
+    {
+        button1.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+        button4.setEnabled(false);
+        button5.setEnabled(false);
+        button6.setEnabled(false);
+        button7.setEnabled(false);
+        button8.setEnabled(false);
+        button9.setEnabled(false);
+    }
     public Crosses() {
         label1.setFont(new Font("Comic Sans",Font.BOLD,20));
         label1.setForeground(Color.ORANGE);
