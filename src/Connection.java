@@ -5,6 +5,7 @@ import java.util.Date;
 public  class Connection extends Thread{
     public  byte ID;
     public Socket socket;
+    public static int plCounter = 0;
     public Connection(Socket s)
     {
         System.out.println(s.getInetAddress().getHostName() + " connected to the server");
@@ -31,36 +32,52 @@ public  class Connection extends Thread{
 
     @Override
     public void run() {
-        try{
+        try {
             super.run();
-            while(!socket.isClosed())
-            {
-                    int code = (int) Server.connectionStreams.get(ID).ois.readObject();
-                    if (ID != Server.lastPlayer) {
-                        System.out.println(ID + ":" + code);
+            while (!socket.isClosed()) {
+                int code = (int) Server.connectionStreams.get(ID).ois.readObject();
+                if (ID != Server.lastPlayer) {
+                    System.out.println(ID + ":" + code);
+                    Server.lastPlayer = ID;
+                    Server.messages.add(new Message(code, ID));
+                }
 
-                        Server.lastPlayer = ID;
-                        Server.messages.add(new Message(code, ID));
-                    } else {
-                    }
-                        if (!Server.messages.isEmpty()) {
-                            Message msg = Server.messages.get(Server.messages.size()-1);
-                            Server.field[(msg.CODE - 1) / 3][(msg.CODE - 1) % 3] = msg.user;
-                            synchronized (Server.connections) {
-                                for (Connection d :
-                                        Server.connections) {
-                                    Server.connectionStreams.get(d.ID).oos.writeObject(msg);
-                                    Server.connectionStreams.get(d.ID).oos.flush();
-                                }
+                if (!Server.messages.isEmpty()) {
+                    Message msg = Server.messages.get(Server.messages.size()-1);
+                   if(msg.CODE <= Server.nFieldSize*Server.nFieldSize) {
+                        Server.field[(msg.CODE - 1) / Server.nFieldSize][(msg.CODE - 1) % Server.nFieldSize] = msg.user;
+                        synchronized (Server.connections) {
+                            for (Connection d :
+                                    Server.connections) {
+                                Server.connectionStreams.get(d.ID).oos.writeObject(msg);
+                                Server.connectionStreams.get(d.ID).oos.flush();
                             }
+                        }
+                  }else
+                   {
+
+                           Server.playAgain += msg.CODE;
+                           plCounter++;
+                           if (Server.playAgain == 44)
+                               for (ConnectionStream c : Server.connectionStreams
+                               ) {
+                                   c.oos.writeInt(44);
+                                   c.oos.flush();
+                                   System.out.println("check");
+                               }
+                           if(plCounter==2){
+                               Server.bPlayAgainSet = true;
+                               plCounter = 0;
+                           }
+                       }
+                   }
 
                 }
-            }
 
-
-            } catch (Exception e) {
-            System.out.println(socket.getInetAddress().getCanonicalHostName() + " has disconnected");
-        }finally {
+        } catch (Exception e) {
+            System.err.println(socket.getInetAddress().getHostName() + " has disconnected");
+            Server.bSomeoneDisconnected = true;
+        } finally {
             try {
                 socket.close();
             } catch (IOException e) {
