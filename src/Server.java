@@ -85,12 +85,21 @@ public class Server {
                         connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 17 : 18, lastPlayer));
                         connectionStreams.get(i).oos.flush();
                     }
-                    System.out.println("GAME OVER!");
-                    lastPlayer = -1;
-                    break;
+
+                }else if(messages.size() >= nFieldSize*nFieldSize)
+                    {
+                        for (int i = 0; i < connectionStreams.size(); i++) {
+                            connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 19 : 19, lastPlayer));
+                            connectionStreams.get(i).oos.flush();
+                        }
+                        System.out.println("GAME OVER!");
+                        lastPlayer = -1;
+                        break;
+                    }
+
                 }
             }
-        }
+
         System.out.println(playAgain);
     }
     public static void main(String[] args) throws IOException {

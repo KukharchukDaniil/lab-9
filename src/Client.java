@@ -131,6 +131,11 @@ public class Client {
 //                        jd2.setVisible(true);
 //                        s.add(jd2);
                     break;
+                case 19:
+                    crosses.label1.setText("Draw");
+                    flag = 1;
+                    crosses.lockInput();
+                    break;
                 case -1:System.out.println("S");
                     break;
             }
@@ -235,6 +240,10 @@ public class Client {
 //                        jd2.setSize(200,200);
 //                        jd2.setVisible(true);
 //                        extendedCrosses.add(jd2);
+                case 19:
+                    extendedCrosses.label1.setText("Draw");
+                    flag = 1;
+                    extendedCrosses.lockInput();
                     break;
                 case -1:System.out.println("S");
                     break;
