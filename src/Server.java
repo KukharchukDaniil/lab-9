@@ -30,8 +30,8 @@ public class Server {
                 }
             }
             if(bSuccess) return true;
+            bSuccess = true;
             for (int j = 0; j < nFieldSize-1; j++) { // проверка по столбцу
-                bSuccess = true;
                 if(field[j][i]==3 || (field[j][i] != field[j + 1][i]))
                     bSuccess =  false;
             }
