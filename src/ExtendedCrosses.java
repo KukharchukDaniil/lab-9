@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
 
 public class ExtendedCrosses extends JFrame{
     public JButton button1;
@@ -20,7 +22,8 @@ public class ExtendedCrosses extends JFrame{
     public JButton button16;
     public JPanel panel1;
     public JLabel label1;
-
+    private JButton CLOSEButton;
+    private Point initialClick;
     public void lockInput()
     {
         button1.setEnabled(false);
@@ -42,11 +45,12 @@ public class ExtendedCrosses extends JFrame{
     }
     ExtendedCrosses()
     {
+        setUndecorated(true);
+        setLocationRelativeTo(null);
         setContentPane(panel1);
         setVisible(true);
         panel1.setVisible(true);
-        label1.setFont(new Font("Comic Sans",Font.BOLD,20));
-        label1.setForeground(Color.ORANGE);
+        UIManager.getDefaults().put("Button.disabledText", Color.white);
         button1.addActionListener(new MyButtonActionListener(1));
         button2.addActionListener(new MyButtonActionListener(2));
         button3.addActionListener(new MyButtonActionListener(3));
@@ -64,5 +68,40 @@ public class ExtendedCrosses extends JFrame{
         button15.addActionListener(new MyButtonActionListener(15));
         button16.addActionListener(new MyButtonActionListener(16));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        panel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                initialClick = e.getPoint();
+                getComponentAt(initialClick);
+            }
+        });
+        panel1.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int thisX = getLocation().x;
+                int thisY = getLocation().y;
+
+                // Determine how much the mouse moved since the initial click
+                int xMoved = e.getX() - initialClick.x;
+                int yMoved = e.getY() - initialClick.y;
+
+                // Move window to this position
+                int X = thisX + xMoved;
+                int Y = thisY + yMoved;
+                setLocation(X, Y);
+
+            }
+        });
+        CLOSEButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Client.socket.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                System.exit(0);
+            }
+        });
     }
 }

@@ -10,13 +10,17 @@ public class ServerFieldInitializer extends JFrame {
     public boolean flag = false;
 
     ServerFieldInitializer() {
+
+
+        this.setUndecorated(true);
+        setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
         });
         getRootPane().setDefaultButton(chooseFieldSizeButton);
-        setSize(300, 120);
+        setSize(145, 81);
         setContentPane(panel1);
         panel1.setVisible(true);
         setVisible(true);

@@ -21,8 +21,11 @@ public class Login extends JFrame {
     public JFormattedTextField portText;
     private JTextField textField1;
     boolean bOkFlag = false;
+    private Point initialClick;
 
     public Login() {
+        setLocationRelativeTo(null);
+        setUndecorated(true);
         setContentPane(contentPane);
         getRootPane().setDefaultButton(buttonOK);
         buttonOK.addActionListener(new ActionListener() {
@@ -44,7 +47,7 @@ public class Login extends JFrame {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        setSize(300,150);
+        setSize(400,200);
         setTitle("Enter the address");
         buttonOK.addActionListener(new ActionListener() {
             @Override
@@ -52,6 +55,31 @@ public class Login extends JFrame {
                 onOK();
             }
         });
+        contentPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                    initialClick = e.getPoint();
+                    getComponentAt(initialClick);
+                }
+            });
+        contentPane.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int thisX = getLocation().x;
+                int thisY = getLocation().y;
+
+                // Determine how much the mouse moved since the initial click
+                int xMoved = e.getX() - initialClick.x;
+                int yMoved = e.getY() - initialClick.y;
+
+                // Move window to this position
+                int X = thisX + xMoved;
+                int Y = thisY + yMoved;
+                setLocation(X, Y);
+
+            }
+        });
+
     }
 
     private void onOK() {

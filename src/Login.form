@@ -3,18 +3,30 @@
   <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="48" y="54" width="222" height="136"/>
+      <xy x="48" y="54" width="283" height="206"/>
     </constraints>
-    <properties/>
-    <border type="none"/>
+    <properties>
+      <background color="-13948117"/>
+      <enabled value="true"/>
+      <foreground color="-301213"/>
+    </properties>
+    <border type="line">
+      <font/>
+      <color color="-16156191"/>
+    </border>
     <children>
       <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
-        <border type="none"/>
+        <properties>
+          <background color="-12828863"/>
+          <foreground color="-12828863"/>
+        </properties>
+        <border type="line">
+          <color color="-16156191"/>
+        </border>
         <children>
           <hspacer id="98af6">
             <constraints>
@@ -34,6 +46,10 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-12828863"/>
+                  <font name="Droid Sans"/>
+                  <foreground color="-301213"/>
+                  <hideActionText value="false"/>
                   <text value="OK"/>
                 </properties>
               </component>
@@ -42,12 +58,17 @@
         </children>
       </grid>
       <grid id="e3588" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
+        <margin top="5" left="0" bottom="5" right="16"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
-        <border type="none"/>
+        <properties>
+          <background color="-12828863"/>
+          <foreground color="-12828863"/>
+        </properties>
+        <border type="line">
+          <color color="-16156191"/>
+        </border>
         <children>
           <component id="664b8" class="javax.swing.JFormattedTextField" binding="ipText">
             <constraints>
@@ -56,6 +77,14 @@
               </grid>
             </constraints>
             <properties>
+              <background color="-13948117"/>
+              <caretColor color="-301213"/>
+              <disabledTextColor color="-12533727"/>
+              <font name="Droid Sans" style="1"/>
+              <foreground color="-301213"/>
+              <margin top="2" left="6" bottom="2" right="6"/>
+              <selectedTextColor color="-11751173"/>
+              <selectionColor color="-4968165"/>
               <text value="localhost"/>
             </properties>
           </component>
@@ -66,6 +95,15 @@
               </grid>
             </constraints>
             <properties>
+              <background color="-13948117"/>
+              <caretColor color="-301213"/>
+              <disabledTextColor color="-12533727"/>
+              <font name="Droid Sans" style="1"/>
+              <foreground color="-301213"/>
+              <inheritsPopupMenu value="false"/>
+              <margin top="2" left="6" bottom="2" right="6"/>
+              <selectedTextColor color="-4968165"/>
+              <selectionColor color="-11738826"/>
               <text value="5523"/>
             </properties>
           </component>
@@ -74,7 +112,12 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="IP:"/>
+              <alignmentX value="0.0"/>
+              <autoscrolls value="false"/>
+              <background color="-11751173"/>
+              <font name="Droid Sans" size="12" style="1"/>
+              <foreground color="-11751173"/>
+              <text value=" IP:"/>
             </properties>
           </component>
           <component id="bde0a" class="javax.swing.JLabel">
@@ -82,7 +125,9 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Port:"/>
+              <font name="Droid Sans" size="12" style="1"/>
+              <foreground color="-11751173"/>
+              <text value=" Port:"/>
             </properties>
           </component>
         </children>

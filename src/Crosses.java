@@ -1,9 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
+import java.awt.event.*;
 import java.io.*;
 
 class MyButtonActionListener implements ActionListener
@@ -36,6 +34,8 @@ public class Crosses extends JFrame {
     public  JButton button9;
     public  JPanel panel1;
     public  JLabel label1;
+    private JButton CLOSEButton;
+    private Point initialClick;
     public  void lockInput()
     {
         button1.setEnabled(false);
@@ -49,10 +49,13 @@ public class Crosses extends JFrame {
         button9.setEnabled(false);
     }
     public Crosses() {
-        label1.setFont(new Font("Comic Sans",Font.BOLD,20));
-        label1.setForeground(Color.ORANGE);
+        setUndecorated(true);
+        UIManager.getDefaults().put("Button.disabledText", Color.white);
+        setLocationRelativeTo(null);
+        setSize(300, 350);
         setContentPane(panel1);
         setVisible(true);
+        button1.setForeground(Color.white);
         button1.addActionListener(new MyButtonActionListener(1));
         button2.addActionListener(new MyButtonActionListener(2));
         button3.addActionListener(new MyButtonActionListener(3));
@@ -64,6 +67,41 @@ public class Crosses extends JFrame {
         button9.addActionListener(new MyButtonActionListener(9));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        CLOSEButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Client.socket.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                System.exit(0);
+            }
+        });
+        panel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                initialClick = e.getPoint();
+                getComponentAt(initialClick);
+            }
+        });
+        panel1.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int thisX = getLocation().x;
+                int thisY = getLocation().y;
+
+                // Determine how much the mouse moved since the initial click
+                int xMoved = e.getX() - initialClick.x;
+                int yMoved = e.getY() - initialClick.y;
+
+                // Move window to this position
+                int X = thisX + xMoved;
+                int Y = thisY + yMoved;
+                setLocation(X, Y);
+
+            }
+        });
     }
 
     {

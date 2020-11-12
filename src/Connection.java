@@ -8,7 +8,7 @@ public  class Connection extends Thread{
     public static int plCounter = 0;
     public Connection(Socket s)
     {
-        System.out.println(s.getInetAddress().getHostName() + " connected to the server");
+        Server.serverUI.textArea1.append(s.getInetAddress().getHostName() + " connected to the server\n");
         for (byte i = 0; i < 2; i++) {
             if(!Server.connections.isEmpty())
             for (Connection d:Server.connections
@@ -34,49 +34,55 @@ public  class Connection extends Thread{
     public void run() {
         try {
             super.run();
+            int prevCode = -1;
             while (!socket.isClosed()) {
                 int code = (int) Server.connectionStreams.get(ID).ois.readObject();
-                if (ID != Server.lastPlayer) {
-                    System.out.println(ID + ":" + code);
-                    Server.lastPlayer = ID;
-                    Server.messages.add(new Message(code, ID));
+                synchronized (Server.messages){
+                     if(code>Server.nFieldSize*Server.nFieldSize){
+                         Server.playAgain+=code;
+                         System.out.println("check");
+                         plCounter++;
+                         if (plCounter == 2) {
+                             System.out.println("check");
+                            for (ConnectionStream c : Server.connectionStreams
+                            ) {
+                                c.oos.writeInt(Server.playAgain);
+                                c.oos.flush();
+                            }
+                            Server.bPlayAgainSet = true;
+                            plCounter = 0;
+                         }
+                    }
+                    if (ID != Server.lastPlayer) {
+                        System.out.println(ID + ":" + code);
+                        Server.lastPlayer = ID;
+                        Server.messages.add(new Message(code, ID));
+                    }
                 }
 
-                if (!Server.messages.isEmpty()) {
-                    Message msg = Server.messages.get(Server.messages.size()-1);
-                   if(msg.CODE <= Server.nFieldSize*Server.nFieldSize) {
-                        Server.field[(msg.CODE - 1) / Server.nFieldSize][(msg.CODE - 1) % Server.nFieldSize] = msg.user;
-                        synchronized (Server.connections) {
-                            for (Connection d :
-                                    Server.connections) {
-                                Server.connectionStreams.get(d.ID).oos.writeObject(msg);
-                                Server.connectionStreams.get(d.ID).oos.flush();
+                synchronized (Server.connections){
+                    if (!Server.messages.isEmpty()) {
+                        Message msg = Server.messages.get(Server.messages.size() - 1);
+                        if (msg.CODE != prevCode && msg.CODE <= Server.nFieldSize * Server.nFieldSize) {
+                            prevCode = msg.CODE;
+                            Server.field[(msg.CODE - 1) / Server.nFieldSize][(msg.CODE - 1) % Server.nFieldSize] = msg.user;
+                            synchronized (Server.connections) {
+                                for (Connection d :
+                                        Server.connections) {
+                                    Server.connectionStreams.get(d.ID).oos.writeObject(msg);
+                                    Server.connectionStreams.get(d.ID).oos.flush();
+                                }
                             }
                         }
-                  }else
-                   {
-
-                           Server.playAgain += msg.CODE;
-                           plCounter++;
-                           if (Server.playAgain == 44)
-                               for (ConnectionStream c : Server.connectionStreams
-                               ) {
-                                   c.oos.writeInt(44);
-                                   c.oos.flush();
-                                   System.out.println("check");
-                               }
-                           if(plCounter==2){
-                               Server.bPlayAgainSet = true;
-                               plCounter = 0;
-                           }
-                       }
-                   }
-
+                    }
                 }
 
+            }
+
         } catch (Exception e) {
-            System.err.println(socket.getInetAddress().getHostName() + " has disconnected");
+            Server.serverUI.textArea1.append(socket.getInetAddress().getHostName() + " has disconnected\n");
             Server.bSomeoneDisconnected = true;
+            Server.bPlayAgainSet = true;
         } finally {
             try {
                 socket.close();

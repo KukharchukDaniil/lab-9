@@ -9,6 +9,9 @@ public class PlayAgainDialog extends JFrame {
     public boolean flag = false;
 
     public PlayAgainDialog() {
+
+
+        setLocationRelativeTo(Client.nSize== 3? Client.crosses:Client.extendedCrosses);
         setContentPane(contentPane);
         getRootPane().setDefaultButton(buttonOK);
         setVisible(true);
@@ -21,14 +24,6 @@ public class PlayAgainDialog extends JFrame {
 
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
                 onCancel();
             }
         });
@@ -46,6 +41,7 @@ public class PlayAgainDialog extends JFrame {
             Client.bos.writeObject(22);
             Client.bos.flush();
             System.out.println("Play again code sent");
+
             flag = true;
             switch (Client.nSize)
             {
@@ -65,10 +61,10 @@ public class PlayAgainDialog extends JFrame {
     private void onCancel() {
         try {
 
-            Client.bos.writeObject(-1);
+            Client.bos.writeObject(25);
             Client.bos.flush();
+            System.out.println("Play again code sent");
             flag = true;
-            Client.socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -19,7 +19,7 @@ public class Server {
     public static Integer playAgain = 0;
     public static boolean bPlayAgainSet= false;
     public static boolean bSomeoneDisconnected = false;
-
+    public static ServerUI serverUI;
     private static boolean checkField() {
         boolean bSuccess = true;
         for (int i = 0; i < nFieldSize; i++) {
@@ -61,6 +61,7 @@ public class Server {
     }
     private static void getConnections() throws IOException {
             serverSocket = new ServerSocket(PORT, 2);
+            serverUI.textArea1.append("Waiting for players\n");
         while (true) {
             Socket client = serverSocket.accept();
             connectionStreams.add(new ConnectionStream(client,counter));
@@ -78,23 +79,41 @@ public class Server {
         }
     }
     private static void gameProc() throws IOException {
+        boolean flag;
+        int msgs;
         while (!serverSocket.isClosed() && !bSomeoneDisconnected) {
             synchronized (connections) {
-                if (checkField()) {
+                flag = checkField();
+                if ((msgs = messages.size()) == messages.size() && flag ) {
+                    Server.serverUI.textArea1.append(connections.get(lastPlayer).ID + " have won\n");
                     for (int i = 0; i < connectionStreams.size(); i++) {
                         connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 17 : 18, lastPlayer));
                         connectionStreams.get(i).oos.flush();
                     }
+                    serverUI.textArea1.append("GAME OVER!\n");
+                    lastPlayer = -1;
+                    break;
 
-                }else if(messages.size() >= nFieldSize*nFieldSize)
+                }else if(msgs == messages.size() && msgs >= nFieldSize*nFieldSize)
                     {
-                        for (int i = 0; i < connectionStreams.size(); i++) {
-                            connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 19 : 19, lastPlayer));
-                            connectionStreams.get(i).oos.flush();
+                        flag = true;
+                        for (byte[] b:field) {
+                            for (byte d:b) {
+                                if(d==3){
+                                    flag = false;
+                                    break;
+                                }
+                            }
                         }
-                        System.out.println("GAME OVER!");
-                        lastPlayer = -1;
-                        break;
+                        if(flag && !checkField()) {
+                            for (int i = 0; i < connectionStreams.size(); i++) {
+                                connectionStreams.get(i).oos.writeObject(new Message(connections.get(i).ID == lastPlayer ? 19 : 19, lastPlayer));
+                                connectionStreams.get(i).oos.flush();
+                            }
+                            serverUI.textArea1.append("GAME OVER2!\n");
+                            lastPlayer = -1;
+                            break;
+                        }
                     }
 
                 }
@@ -104,23 +123,26 @@ public class Server {
     }
     public static void main(String[] args) throws IOException {
         ServerFieldInitializer serverFieldInitializer = new ServerFieldInitializer();
+        serverFieldInitializer.setLocationRelativeTo(null);
         while(true)
         {
             System.out.print("");
             if(serverFieldInitializer.flag)
                 break;
         }
+        serverUI = new ServerUI();
+        serverUI.setLocationRelativeTo(null);
         try {
 
             field = new byte[nFieldSize][nFieldSize];
-            System.err.println("Field size is " +nFieldSize);
+            serverUI.textArea1.append("Field size is " +nFieldSize + "\n");
             getConnections();
             do {
                 bPlayAgainSet = false;
                 playAgain = 0;
                 lastPlayer = -1;
                 messages.clear();
-                System.out.println("start");
+                serverUI.textArea1.append("Game is started\n");
                 initField();
                 try {
                     gameProc();
@@ -132,7 +154,7 @@ public class Server {
             }while(playAgain == 44);
         } finally {
             serverSocket.close();
-            System.err.println("Server is closed");
+            serverUI.textArea1.append("Server is closed\n");
         }
     }
 }

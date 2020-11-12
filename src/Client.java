@@ -19,6 +19,7 @@ public class Client {
     static String port;
     public static void main(String[] args) {
         Login login = new Login();
+        login.setLocationRelativeTo(null);
         login.setVisible(true);
         while(!login.bOkFlag)
         {
@@ -27,7 +28,12 @@ public class Client {
         try {
             socket = new Socket(address,Integer.parseInt( port));
         } catch (IOException e) {
-            System.err.println("Can't connect to the server");
+            new WaitingDialog( "Can't connect to the server").setLocationRelativeTo(null);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
             System.exit(4);
         }
         String str;
@@ -36,12 +42,16 @@ public class Client {
 
 
             System.out.println("Success");
+            WaitingDialog dialog = new WaitingDialog("Connected. Waiting for second player");
+            dialog.setLocationRelativeTo(null);
             bos = new ObjectOutputStream(socket.getOutputStream());
             bis = new ObjectInputStream(socket.getInputStream());
             nSize = bis.readInt();
 
             point = bis.readInt();
-             do{   switch (nSize)
+            dialog.dispose();
+             do{
+                 switch (nSize)
             {
                 case 3:
                     CrossesProc();
@@ -50,20 +60,26 @@ public class Client {
                     ExtendedCrossesProc();
                     break;
             }
-            PlayAgainDialog playAgainDialog  = new PlayAgainDialog();
+             PlayAgainDialog playAgainDialog  = new PlayAgainDialog();
+             playAgainDialog.setLocationRelativeTo(nSize == 3? crosses : extendedCrosses);
              playAgainDialog.setVisible(true);
-             while (!playAgainDialog.flag){System.out.print("");};
+             while (!playAgainDialog.flag){
+                System.out.print("");
+             };
              if(socket.isClosed())break;
              int check = bis.readInt();
-             if (check != 44)break;
+             System.err.println(check);
+             if (check != 44)System.exit(check);
              System.out.println("Again");
              }while (!socket.isClosed());
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Disconnected");
+            System.exit(2);
         }
     }
     public static void CrossesProc() throws IOException, ClassNotFoundException {
         crosses =  new Crosses();
+        crosses.setLocationRelativeTo(null);
         crosses.label1.setText(point == 1? "X":"0");
         Object obj;
         Message msg;
@@ -119,12 +135,12 @@ public class Client {
                 case 17:
 
                     crosses.label1.setText("Victory");
-                    flag = 1;
+                    flag = 0;
                     crosses.lockInput();
                     break;
                 case 18:
                     crosses.label1.setText("Defeat");
-                    flag = 1;
+                    flag = 0;
                     crosses.lockInput();
 //                        JDialog jd2 = new JDialog(s,"You have lose!");
 //                        jd2.setSize(200,200);
@@ -133,7 +149,7 @@ public class Client {
                     break;
                 case 19:
                     crosses.label1.setText("Draw");
-                    flag = 1;
+                    flag = 0;
                     crosses.lockInput();
                     break;
                 case -1:System.out.println("S");
@@ -143,6 +159,7 @@ public class Client {
     }
     public static void ExtendedCrossesProc() throws IOException, ClassNotFoundException {
         extendedCrosses =  new ExtendedCrosses();
+        extendedCrosses.setLocationRelativeTo(null);
         extendedCrosses.label1.setText(point == 1? "X":"0");
         extendedCrosses.pack();
         Message msg;
@@ -225,7 +242,7 @@ public class Client {
                 case 18:
 
                     extendedCrosses.label1.setText("Defeat");
-                    flag = 1;
+                    flag = 0;
                     extendedCrosses.lockInput();
 //                        JDialog jd1 = new JDialog(extendedCrosses,"You have won!");
 //                        jd1.setSize(200,200);
@@ -234,15 +251,16 @@ public class Client {
                     break;
                 case 17:
                     extendedCrosses.label1.setText("Victory");
-                    flag = 1;
+                    flag = 0;
                     extendedCrosses.lockInput();
 //                        JDialog jd2 = new JDialog(extendedCrosses,"You have lose!");
 //                        jd2.setSize(200,200);
 //                        jd2.setVisible(true);
 //                        extendedCrosses.add(jd2);
+                    break;
                 case 19:
                     extendedCrosses.label1.setText("Draw");
-                    flag = 1;
+                    flag = 0;
                     extendedCrosses.lockInput();
                     break;
                 case -1:System.out.println("S");

@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ServerFieldInitializer">
   <grid id="27dc6" binding="panel1" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+    <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="226" height="73"/>
+      <xy x="20" y="20" width="145" height="81"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-13948117"/>
+      <foreground color="-13948117"/>
+      <maximumSize width="145" height="116"/>
+    </properties>
     <border type="line">
-      <color color="-4473925"/>
+      <color color="-16156191"/>
     </border>
     <children>
-      <component id="2b2" class="javax.swing.JButton" binding="chooseFieldSizeButton" default-binding="true">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Choose field size"/>
-        </properties>
-      </component>
       <component id="58c5a" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-13948117"/>
+          <font name="Droid Sans" size="12" style="1"/>
+          <foreground color="-10379039"/>
           <model>
             <item value="3"/>
             <item value="4"/>
           </model>
+        </properties>
+      </component>
+      <component id="2b2" class="javax.swing.JButton" binding="chooseFieldSizeButton" default-binding="true">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-13948117"/>
+          <font name="Droid Sans" size="12" style="1"/>
+          <foreground color="-11751173"/>
+          <text value="Choose field size"/>
         </properties>
       </component>
     </children>
