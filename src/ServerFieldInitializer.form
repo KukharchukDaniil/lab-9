@@ -6,12 +6,12 @@
       <xy x="20" y="20" width="145" height="81"/>
     </constraints>
     <properties>
-      <background color="-13948117"/>
+      <background color="-5329234"/>
       <foreground color="-13948117"/>
       <maximumSize width="145" height="116"/>
     </properties>
     <border type="line">
-      <color color="-16156191"/>
+      <color color="-9296342"/>
     </border>
     <children>
       <component id="58c5a" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
@@ -19,9 +19,9 @@
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-13948117"/>
+          <background color="-4480121"/>
           <font name="Droid Sans" size="12" style="1"/>
-          <foreground color="-10379039"/>
+          <foreground color="-9296342"/>
           <model>
             <item value="3"/>
             <item value="4"/>
@@ -33,9 +33,9 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <background color="-13948117"/>
+          <background color="-9296342"/>
           <font name="Droid Sans" size="12" style="1"/>
-          <foreground color="-11751173"/>
+          <foreground color="-4480121"/>
           <text value="Choose field size"/>
         </properties>
       </component>

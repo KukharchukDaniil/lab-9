@@ -1,6 +1,7 @@
 import sun.awt.WindowClosingListener;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class ServerFieldInitializer extends JFrame {
@@ -8,10 +9,33 @@ public class ServerFieldInitializer extends JFrame {
     private JComboBox comboBox1;
     private JPanel panel1;
     public boolean flag = false;
-
+    private Point initialClick;
     ServerFieldInitializer() {
 
+        panel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                initialClick = e.getPoint();
+                getComponentAt(initialClick);
+            }
+        });
+        panel1.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int thisX = getLocation().x;
+                int thisY = getLocation().y;
 
+                // Determine how much the mouse moved since the initial click
+                int xMoved = e.getX() - initialClick.x;
+                int yMoved = e.getY() - initialClick.y;
+
+                // Move window to this position
+                int X = thisX + xMoved;
+                int Y = thisY + yMoved;
+                setLocation(X, Y);
+
+            }
+        });
         this.setUndecorated(true);
         setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() {

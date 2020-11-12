@@ -81,6 +81,11 @@ public  class Connection extends Thread{
 
         } catch (Exception e) {
             Server.serverUI.textArea1.append(socket.getInetAddress().getHostName() + " has disconnected\n");
+            try {
+                Server.connections.get(ID^ID).socket.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
             Server.bSomeoneDisconnected = true;
             Server.bPlayAgainSet = true;
         } finally {

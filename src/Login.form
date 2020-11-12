@@ -48,7 +48,7 @@
                 <properties>
                   <background color="-12828863"/>
                   <font name="Droid Sans"/>
-                  <foreground color="-301213"/>
+                  <foreground color="-10848773"/>
                   <hideActionText value="false"/>
                   <text value="OK"/>
                 </properties>
@@ -81,11 +81,12 @@
               <caretColor color="-301213"/>
               <disabledTextColor color="-12533727"/>
               <font name="Droid Sans" style="1"/>
-              <foreground color="-301213"/>
+              <foreground color="-10848773"/>
               <margin top="2" left="6" bottom="2" right="6"/>
               <selectedTextColor color="-11751173"/>
               <selectionColor color="-4968165"/>
               <text value="localhost"/>
+              <toolTipText value=""/>
             </properties>
           </component>
           <component id="1e20f" class="javax.swing.JFormattedTextField" binding="portText">
@@ -99,7 +100,7 @@
               <caretColor color="-301213"/>
               <disabledTextColor color="-12533727"/>
               <font name="Droid Sans" style="1"/>
-              <foreground color="-301213"/>
+              <foreground color="-10848773"/>
               <inheritsPopupMenu value="false"/>
               <margin top="2" left="6" bottom="2" right="6"/>
               <selectedTextColor color="-4968165"/>
