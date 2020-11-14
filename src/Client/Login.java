@@ -1,18 +1,8 @@
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
+package Client;
 
 import javax.swing.*;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
-import java.util.regex.Matcher;
 
 public class Login extends JFrame {
     private JPanel contentPane;
@@ -20,7 +10,7 @@ public class Login extends JFrame {
     public JFormattedTextField ipText;
     public JFormattedTextField portText;
     private JTextField textField1;
-    boolean bOkFlag = false;
+    public boolean bOkFlag = false;
     private Point initialClick;
 
     public Login() {

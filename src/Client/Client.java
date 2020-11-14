@@ -1,10 +1,10 @@
-import com.sun.org.apache.xml.internal.security.algorithms.MessageDigestAlgorithm;
+package Client;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
+import Server.Message;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Client {
@@ -69,7 +69,10 @@ public class Client {
              if(socket.isClosed())break;
              int check = bis.readInt();
              System.err.println(check);
-             if (check != 44)System.exit(check);
+             if (check != 44) {
+              //   new WaitingDialog("Second player has disconnected");
+                 System.exit(check);
+             }
              System.out.println("Again");
              }while (!socket.isClosed());
         } catch (IOException | ClassNotFoundException e) {

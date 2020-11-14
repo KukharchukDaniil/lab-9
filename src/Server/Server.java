@@ -1,20 +1,20 @@
-import java.io.BufferedReader;
+package Server;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Server {
-    private static ServerSocket serverSocket;
+    public static ServerSocket serverSocket;
     public static int PORT = 5523;
     private static int counter = 0;
     public static Integer nFieldSize;
-    static byte[][] field;
+    public static byte[][] field;
     public static ArrayList<Message> messages = new ArrayList<Message>();
     public static ArrayList<ConnectionStream> connectionStreams = new ArrayList<ConnectionStream>();
-    public static byte lastPlayer = -1;
+    public static Byte lastPlayer = -1;
     public static ArrayList<Connection> connections = new ArrayList<Connection>();
     public static Integer playAgain = 0;
     public static boolean bPlayAgainSet= false;
@@ -154,7 +154,7 @@ public class Server {
             }while(playAgain == 44);
         } finally {
             serverSocket.close();
-            serverUI.textArea1.append("Server is closed\n");
+            serverUI.textArea1.append("Server.Server is closed\n");
         }
     }
 }

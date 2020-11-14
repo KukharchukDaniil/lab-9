@@ -1,6 +1,7 @@
-import java.io.*;
+package Server;
+
+import java.io.IOException;
 import java.net.Socket;
-import java.util.Date;
 
 public  class Connection extends Thread{
     public  byte ID;
@@ -11,7 +12,7 @@ public  class Connection extends Thread{
         Server.serverUI.textArea1.append(s.getInetAddress().getHostName() + " connected to the server\n");
         for (byte i = 0; i < 2; i++) {
             if(!Server.connections.isEmpty())
-            for (Connection d:Server.connections
+            for (Connection d: Server.connections
             ) {
                 if(d.ID!=i){
                     ID = i;
@@ -38,7 +39,7 @@ public  class Connection extends Thread{
             while (!socket.isClosed()) {
                 int code = (int) Server.connectionStreams.get(ID).ois.readObject();
                 synchronized (Server.messages){
-                     if(code>Server.nFieldSize*Server.nFieldSize){
+                     if(code> Server.nFieldSize* Server.nFieldSize){
                          Server.playAgain+=code;
                          System.out.println("check");
                          plCounter++;
@@ -53,11 +54,13 @@ public  class Connection extends Thread{
                             plCounter = 0;
                          }
                     }
-                    if (ID != Server.lastPlayer) {
-                        System.out.println(ID + ":" + code);
-                        Server.lastPlayer = ID;
-                        Server.messages.add(new Message(code, ID));
-                    }
+                     synchronized (Server.lastPlayer) {
+                         if (ID != Server.lastPlayer) {
+                             System.out.println(ID + ":" + code);
+                             Server.lastPlayer = ID;
+                             Server.messages.add(new Message(code, ID));
+                         }
+                     }
                 }
 
                 synchronized (Server.connections){
@@ -83,6 +86,7 @@ public  class Connection extends Thread{
             Server.serverUI.textArea1.append(socket.getInetAddress().getHostName() + " has disconnected\n");
             try {
                 Server.connections.get(ID^ID).socket.close();
+                Server.serverSocket.close();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }

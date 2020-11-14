@@ -1,7 +1,6 @@
+package Server;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -47,7 +46,7 @@ public class ServerUI extends JFrame {
             }
 
             private void onCancel() {
-                System.err.println("Server is closed");
+                System.err.println("Server.Server is closed");
                 System.exit(2);
             }
         });

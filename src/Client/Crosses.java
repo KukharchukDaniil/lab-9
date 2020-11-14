@@ -1,8 +1,10 @@
+package Client;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
+import java.io.IOException;
 
 class MyButtonActionListener implements ActionListener
 {
